@@ -1,5 +1,5 @@
 require('dotenv').config();
-const dns = require('dns');
+const dns = require('dns'); //https://nodejs.org/api/dns.html
 let bodyParser = require('body-parser')
 const express = require('express');
 const cors = require('cors');
@@ -41,7 +41,7 @@ app.post("/api/shorturl", function(req, res){
 
     saved_short_urls[last_saved_id+1] = req.body.url;
     last_saved_id++;
-    res.json({ original_url : req.body.url, short_url : 1})
+    res.json({ original_url : req.body.url, short_url : last_saved_id})
   });
 });
 
@@ -52,7 +52,7 @@ app.get("/api/shorturl/status", function(req, res){
 app.get("/api/shorturl/:short_url", function(req, res){
   console.log(req.params)
   console.log("Will be redirected to " + saved_short_urls[req.params.short_url])
-  res.json({ redirect_to : req.params.short_url})
+  res.redirect(saved_short_urls[req.params.short_url])
 });
 
 app.listen(port, function() {
